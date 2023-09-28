@@ -1,0 +1,118 @@
+﻿@using NotePadApp.ViewModels.Dto;
+@model LoginDto
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+
+        body {
+            background: #fff;
+        }
+
+        .input-field input[type=date]:focus + label,
+        .input-field input[type=text]:focus + label,
+        .input-field input[type=email]:focus + label,
+        .input-field input[type=password]:focus + label {
+            color: #261759;
+        }
+
+        .input-field input[type=date]:focus,
+        .input-field input[type=text]:focus,
+        .input-field input[type=email]:focus,
+        .input-field input[type=password]:focus {
+            border-bottom: 2px solid #261759;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="section"></div>
+    <main>
+        <center>
+            <img class="responsive-img" style="width: 250px;" src="https://i.imgur.com/ax0NCsK.gif" />
+            <div class="section"></div>
+
+            <h5 style="color:#261759;" class="text">Login to Access Your Notes</h5>
+            <div class="section"></div>
+
+            <div class="container">
+                <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; width: 600px; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+                    <form asp-action="Login" class="col s12" method="post">
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="col-md-12 alert alert-danger">
+                                <span><b>Sorry!</b> - @TempData["Error"]</span>
+                            </div>
+                        }
+                        <div class='row'>
+                            <div class='col s12'>
+                            </div>
+                        </div>
+
+                        <div class='row'>
+                            <div class='input-field col s12'>
+                                <input asp-for="Email" class='validate' type='email' id='email' />
+                                <label asp-for="Email">Enter your email</label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class='row'>
+                            <div class='input-field col s12'>
+                                <input asp-for="Password" class='validate' type='password' id='password' />
+                                <label asp-for="Password">Enter your password</label>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <input asp-for="RememberMe" type="checkbox" id="remember-me" />
+                            <label asp-for="RememberMe" for="remember-me">Remember me</label>
+                            <span asp-validation-for="RememberMe" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <label style='float: right;'>
+                                <h6 style="color:#261759;" class="text">Don't have an account</h6><a href="@Url.Action("RPassword", "Account")">Forgot Password?</a>
+
+                            </label>
+                        </div>
+
+                        <br />
+                        <center>
+                            <div class='row'>
+                                <button type='submit' name='btn_login' class='col  btn btn-large' style='background-color: #261759;'>Login</button>
+                            </div>
+                        </center>
+
+                    </form>
+                </div>
+            </div>
+            <h6 style="color:#261759;" class="text">Don't have an account</h6><a href="@Url.Action("Register", "Account")">Sign-Up</a>
+        </center>
+
+        <div class="section"></div>
+        <div class="section"></div>
+    </main>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+</body>
+
+</html>

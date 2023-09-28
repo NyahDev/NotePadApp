@@ -1,0 +1,183 @@
+﻿﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UserNotePAD</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/rest.css" asp-append-version="true" />
+
+
+</head>
+<style>
+
+    * {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: #EEE
+    }
+
+    #container {
+        width: 98%;
+        padding: 20px;
+        background: #DDD;
+        position: fixed;
+        border-bottom: 3px solid #AAA;
+    }
+
+    .spacer {
+        height: 50px;
+    }
+
+    #doc_stat {
+        width: 15px;
+        color: #EEE;
+        float: right;
+        background: #272;
+        padding: 3px 5px;
+        border-radius: 3px;
+        overflow: hidden;
+        transition: width .3s ease;
+    }
+
+        #doc_stat span {
+            white-space: nowrap;
+        }
+
+        #doc_stat:hover {
+            width: 70px
+        }
+
+    #title {
+        display: inline-block;
+        color: #CCC;
+    }
+
+    #title_field {
+        font-size: 24pt;
+        background: transparent;
+        width: auto;
+        border: none;
+        outline: none;
+        padding: 5px 10px;
+        color: #444;
+    }
+
+    #title:hover {
+        background: #EEE;
+        outline: thin solid #555;
+    }
+
+    hr {
+        margin: 10px 0;
+        border: none;
+        border-top: thin solid #BBB;
+    }
+
+    #tools {
+        -webkit-user-select: none; /* Chrome/Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+ */
+        /* Rules below not implemented in browsers yet */
+        -o-user-select: none;
+        user-select: none;
+    }
+
+
+        #tools li {
+            display: inline-block;
+            color: #27C;
+            font-size: 19px;
+            padding: 2px 4px;
+            width: 22px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+            #tools li:hover {
+                background: #49F;
+                color: white;
+            }
+
+            #tools li:active {
+                background: #26C;
+                color: #EEE;
+            }
+
+    .grab {
+        font-size: 19px;
+    }
+
+    #tools div {
+        display: inline-block;
+        padding: 5px 5px;
+        color: #DDD;
+    }
+
+        #tools div:hover {
+            background: #303030;
+            color: #555;
+            outline: thin solid #555;
+        }
+
+    #body {
+        font-family: "Times New Roman",serif;
+        background: #FFF;
+        outline: none;
+        width: 90%;
+        font-size: 14pt;
+        /* margin-left: 230px; */
+        padding: 40px;
+        height: 1500px;
+        color: black;
+        box-shadow: 0 0 20px #AAA;
+    }
+
+
+        #body * {
+            font-family: "Times New Roman",serif;
+        }
+
+</style>
+<body>
+    <div class="spacer"></div>
+
+    <div id="body" contenteditable="true">
+        This uses contenteditable, quite a neat little feature.
+
+    </div>
+    <div class="spacer"></div>
+
+
+</body>
+<script>
+
+    // function getSelectionHtml() {
+    //     var html = "";
+    //     if (typeof window.getSelection != "undefined") {
+    //         var sel = window.getSelection();
+    //         if (sel.rangeCount) {
+    //             var container = document.createElement("div");
+    //             for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+    //                 container.appendChild(sel.getRangeAt(i).cloneContents());
+    //             }
+    //             html = container.innerHTML;
+    //         }
+    //     } else if (typeof document.selection != "undefined") {
+    //         if (document.selection.type == "Text") {
+    //             html = document.selection.createRange().htmlText;
+    //         }
+    //     }
+    //     alert(html);
+    // }
+
+</script>
+</html>

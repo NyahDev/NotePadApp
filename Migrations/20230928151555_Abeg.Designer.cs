@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NotePadApp.Data;
 
@@ -11,9 +12,10 @@ using NotePadApp.Data;
 namespace NotePadApp.Migrations
 {
     [DbContext(typeof(NotePadDbContext))]
-    partial class NotePadDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230928151555_Abeg")]
+    partial class Abeg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

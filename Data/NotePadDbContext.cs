@@ -12,5 +12,6 @@ namespace NotePadApp.Data
        
         public DbSet<Note> Notes { get; set; }
         public DbSet<User> users { get; set; }
+        public DbSet<PasswordResetTokens> PasswordResetTokens { get; set; }
     }
 }

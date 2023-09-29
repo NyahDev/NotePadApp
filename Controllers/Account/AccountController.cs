@@ -68,19 +68,22 @@ namespace NotePadApp.Controllers.Account
 
         public IActionResult RPassword()
         {
-            var response = new PasswordRestDto();
+            var response = new ResetPasswordRequestDto();
             return View(response);
         }
 
-        public IActionResult ConfirmPass()
+        public IActionResult ConfirmPass(string email, string token)
         {
             var response = new ConfirmPasswordDto();
+            response.Email = email;
+            response.Token = token;
+
             return View(response);
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         [HttpGet]
         //[ValidateAntiForgeryToken]
@@ -331,91 +334,319 @@ namespace NotePadApp.Controllers.Account
             return RedirectToAction("Login", "Account");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ResetPasswordRequest(ResetPasswordRequestDto resetPasswordRequestDto)
+        //[HttpPost]
+        //public async Task<IActionResult> ResetPasswordRequest(ResetPasswordRequestDto resetPasswordRequestDto)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(resetPasswordRequestDto.Email);
+
+        //    if (user == null || !(user.IsVerified))
+        //    {
+        //        // Handle case where user doesn't exist or email is not confirmed
+        //        TempData["Error"] = "Invalid email address.";
+        //        return RedirectToAction("RPassword", "Account");
+        //    }
+
+        //    var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //    var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(resetToken));
+
+        //    var callbackUrl = Url.Action("ConfirmPass", "Account", new { userId = user.Id, token = encodedToken }, protocol: HttpContext.Request.Scheme);
+        //    var emailSent = SendResetPasswordEmail(user.Email, callbackUrl);
+
+        //    if (!emailSent)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to send reset link.");
+        //    }
+
+        //    return RedirectToAction("ConfirmPass", "Account");
+        //}
+
+        //[HttpPost("resetpassword/confirm")]
+        //public async Task<IActionResult> ResetPasswordConfirm(ConfirmPasswordDto confirmPassword)
+        //{
+        //    // Ensure both UserId and Token are provided
+        //    //if (string.IsNullOrEmpty(confirmPassword.) || string.IsNullOrEmpty(confirmPassword.Token))
+        //    //{
+        //    //    return BadRequest("Invalid reset link.");
+        //    //}
+
+        //    // Decode the token
+        //    //var decodedToken = WebEncoders.Base64UrlDecode(Encoding.UTF8.GetBytes(confirmPassword.Token));
+        //    //var resetToken = Encoding.UTF8.GetString(decodedToken);
+        //    //if (confirmPassword.Token == null)
+        //    //{
+        //    //    return BadRequest("Invalid reset link.");
+        //    //}
+
+        //    //var decodedToken = WebEncoders.Base64UrlDecode(Encoding.UTF8.GetBytes(confirmPassword.Token));
+        //    //var resetToken = Encoding.UTF8.GetString(decodedToken);
+
+        //    string resetToken = null;
+
+        //    if (confirmPassword.Token != null)
+        //    {
+        //        byte[] decodedBytes = WebEncoders.Base64UrlDecode(confirmPassword.Token);
+        //        resetToken = Encoding.UTF8.GetString(decodedBytes);
+        //    }
+
+        //    if (resetToken == null)
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+
+        //    // Verify the reset token (Add your own logic to check token validity)
+        //    var user = await _userManager.FindByIdAsync(confirmPassword.UserId);
+
+        //    if (user == null || !await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", resetToken))
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    // Verify the new password and confirm password
+        //    if (confirmPassword.NewPassword != confirmPassword.ConfirmPassword)
+        //    {
+        //        return BadRequest("New password and confirm password do not match.");
+        //    }
+
+        //    var result = await _userManager.ResetPasswordAsync(user, resetToken, confirmPassword.NewPassword);
+
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+
+        //    return BadRequest("Password reset failed. Please try again.");
+        //}
+
+        //[HttpPost("resetpassword/confirm")]
+        //public async Task<IActionResult> ResetPasswordConfirm(ConfirmPasswordDto confirmPassword)
+        //{
+        //    var token = Request.Form["jwtToken"];
+
+        //    if (string.IsNullOrEmpty(token))
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    var claim = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+        //    var userId = claim?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        //    if (string.IsNullOrEmpty(userId))
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    var user = await _userManager.FindByIdAsync(userId);
+
+        //    if (user == null)
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    string resetToken = null;
+
+        //    if (confirmPassword.Token != null)
+        //    {
+        //        byte[] decodedBytes = WebEncoders.Base64UrlDecode(confirmPassword.Token);
+        //        resetToken = Encoding.UTF8.GetString(decodedBytes);
+        //    }
+
+        //    if (resetToken == null || !await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", resetToken))
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    if (confirmPassword.NewPassword != confirmPassword.ConfirmPassword)
+        //    {
+        //        return BadRequest("New password and confirm password do not match.");
+        //    }
+
+        //    var result = await _userManager.ResetPasswordAsync(user, resetToken, confirmPassword.NewPassword);
+
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+
+        //    return BadRequest("Password reset failed. Please try again.");
+        //}
+
+        //[HttpPost("resetpassword/confirm")]
+        //public async Task<IActionResult> ResetPasswordConfirm(ConfirmPasswordDto confirmPassword)
+        //{
+        //    var token = Request.Form["jwtToken"];
+
+        //    if (string.IsNullOrEmpty(token))
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    var claim = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+        //    var userId = claim?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        //    if (string.IsNullOrEmpty(userId))
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    var user = await _userManager.FindByIdAsync(userId);
+
+        //    if (user == null)
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    string resetToken = null;
+
+        //    if (!string.IsNullOrEmpty(token))
+        //    {
+        //        byte[] decodedBytes = WebEncoders.Base64UrlDecode(confirmPassword.Token);
+        //        resetToken = Encoding.UTF8.GetString(decodedBytes);
+
+        //    }
+
+        //    if (resetToken == null || !await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", resetToken))
+        //    {
+        //        return BadRequest("Invalid reset link.");
+        //    }
+
+        //    if (confirmPassword.NewPassword != confirmPassword.ConfirmPassword)
+        //    {
+        //        TempData["Error"] = "New password and confirm password do not match.";
+        //        return RedirectToAction("ConfirmPass", "Account"); // Redirect back to the confirm password page with error message
+        //    }
+
+        //    var result = await _userManager.ResetPasswordAsync(user, resetToken, confirmPassword.NewPassword);
+
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction("Login", "Account"); // Redirect to the login page after successful password reset
+        //    }
+
+        //    TempData["Error"] = "Password reset failed. Please try again.";
+        //    return RedirectToAction("ConfirmPass", "Account"); // Redirect back to the confirm password page with error message
+        //}
+
+        [HttpPost("reset-password-request")]
+        public async Task<IActionResult> ResetPasswordRequest(ResetPasswordRequestDto forgotPasswordDto)
         {
-            var user = await _userManager.FindByEmailAsync(resetPasswordRequestDto.Email);
-
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            try
             {
-                // Handle case where user doesn't exist or email is not confirmed
-                TempData["Error"] = "Invalid email address.";
-                return RedirectToAction("RPassword", "Account");
+                var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+
+                if (user == null || !user.IsVerified)
+                {
+                    return BadRequest("User not found or not verified.");
+                }
+
+                // Generate a password reset token
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                // Encode the token (optional, but recommended)
+                var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(resetToken));
+
+                //ssve the toke in the db
+                var reset = new PasswordResetTokens
+                {
+                    UserId = user.Id,
+                    Token = encodedToken,
+                     ExpirationDate = DateTime.UtcNow.AddMinutes(28),
+                     IsUsed = false,
+                };
+
+                _dbContext.PasswordResetTokens.Add(reset);
+                _dbContext.SaveChanges();
+
+
+                // Encode the email (optional, but recommended)         
+                var encodedEmail = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(forgotPasswordDto.Email));
+
+                // Construct the reset link with the encoded token and email
+                var callbackUrl = $"{Request.Scheme}://{Request.Host}/Account/ConfirmPass?token={encodedToken}&email={encodedEmail}";
+
+                // Send an email to the user with a link to reset their password
+                var emailSent = SendResetPasswordEmail(user.Email, callbackUrl);
+
+                if (!emailSent)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to send password reset email. Please try again later.");
+                }
+
+                return Ok("Password reset instructions sent to your email.");
             }
-
-            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(resetToken));
-
-            var callbackUrl = Url.Action("RPassword", "Account", new { userId = user.Id, token = encodedToken }, protocol: HttpContext.Request.Scheme);
-            var emailSent = SendResetPasswordEmail(user.Email, callbackUrl);
-
-            if (!emailSent)
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to send reset link.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return RedirectToAction("ConfirmPass", "Account");
         }
 
-        [HttpPost("resetpassword/confirm")]
-        public async Task<IActionResult> ResetPasswordConfirm([FromBody] ConfirmPasswordDto confirmPassword)
+        [HttpPost("confirm-password-reset")]
+        public async Task<IActionResult> ConfirmPassword(ConfirmPasswordDto confirmResetPassword)
         {
-            // Ensure both UserId and Token are provided
-            if (string.IsNullOrEmpty(confirmPassword.UserId) || string.IsNullOrEmpty(confirmPassword.Token))
+            try
             {
-                return BadRequest("Invalid reset link.");
+                if (string.IsNullOrWhiteSpace(confirmResetPassword.Token) || string.IsNullOrWhiteSpace(confirmResetPassword.Email))
+                {
+                    return BadRequest("Token and email are required.");
+                }
+
+                // Decode the base64-encoded token and email
+                var decodedTokenBytes = WebEncoders.Base64UrlDecode(confirmResetPassword.Token);
+                var decodedEmailBytes = WebEncoders.Base64UrlDecode(confirmResetPassword.Email);
+                var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
+                var decodedEmail = Encoding.UTF8.GetString(decodedEmailBytes);
+
+                // Check if the token exists and is not expired
+                var resetToken = _dbContext.PasswordResetTokens.SingleOrDefault(t =>
+                    t.Token == confirmResetPassword.Token && t.ExpirationDate > DateTime.UtcNow);
+
+                if (resetToken == null)
+                {
+                     TempData["Error"] = "Invalid OR Expired Token";
+                     return RedirectToAction("RPassword", "Account");
+                }
+                confirmResetPassword.Email = decodedEmail;
+                var user = await _userManager.FindByEmailAsync(confirmResetPassword.Email);
+
+                if (user == null)
+                {
+                    TempData["Error"] = "User not found";
+                    return RedirectToAction("RPassword", "Account");
+                }
+                confirmResetPassword.Token = decodedToken;
+                // Reset the user's password
+                var resetResult = await _userManager.ResetPasswordAsync(user, confirmResetPassword.Token, confirmResetPassword.NewPassword);
+
+                if (!resetResult.Succeeded)
+                {
+                    TempData["Error"] = resetResult.Errors;
+                    return RedirectToAction("RPassword", "Account");
+                }
+                    // Add a message to the email body to inform the user about successful verification
+                string emailBody = "Your verification is successful. You can now proceed with your login.";
+
+                // Send the email to notify the user about successful verification
+                bool emailSent = SendEmail(user.Email, "Verification Successful", emailBody);
+
+                if (!emailSent)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, "Failed to send email notification. Please try again later.");
+                }
+
+                // Mark the token as used
+                resetToken.IsUsed = true;
+                await _dbContext.SaveChangesAsync();
+                
+                return View("Login", "Account");
             }
-
-            // Decode the token
-            //var decodedToken = WebEncoders.Base64UrlDecode(Encoding.UTF8.GetBytes(confirmPassword.Token));
-            //var resetToken = Encoding.UTF8.GetString(decodedToken);
-            //if (confirmPassword.Token == null)
-            //{
-            //    return BadRequest("Invalid reset link.");
-            //}
-
-            //var decodedToken = WebEncoders.Base64UrlDecode(Encoding.UTF8.GetBytes(confirmPassword.Token));
-            //var resetToken = Encoding.UTF8.GetString(decodedToken);
-
-            string resetToken = null;
-
-            if (confirmPassword.Token != null)
+            catch (Exception ex)
             {
-                byte[] decodedBytes = WebEncoders.Base64UrlDecode(confirmPassword.Token);
-                resetToken = Encoding.UTF8.GetString(decodedBytes);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            if (resetToken == null)
-            {
-                return BadRequest("Invalid reset link.");
-            }
-
-
-            // Verify the reset token (Add your own logic to check token validity)
-            var user = await _userManager.FindByIdAsync(confirmPassword.UserId);
-
-            if (user == null || !await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", resetToken))
-            {
-                return BadRequest("Invalid reset link.");
-            }
-
-            // Verify the new password and confirm password
-            if (confirmPassword.NewPassword != confirmPassword.ConfirmPassword)
-            {
-                return BadRequest("New password and confirm password do not match.");
-            }
-
-            var result = await _userManager.ResetPasswordAsync(user, resetToken, confirmPassword.NewPassword);
-
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            return BadRequest("Password reset failed. Please try again.");
         }
 
 
+        //I want to pass the token from the URL and not from the view
 
         private string GenerateJWTToken(User user)
         {
@@ -446,20 +677,6 @@ namespace NotePadApp.Controllers.Account
             return otpValue.ToString();
         }
 
-        private bool IsValidEmail(string email)
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-
-
-                return addr.Address == email && email.Contains(".") && email.Contains("@");
-            }
-            catch
-            {
-                return false;
-            }
-        }
         //private bool SendEmail(string email, string subject, string body)
         //{
         //    try
@@ -597,31 +814,31 @@ namespace NotePadApp.Controllers.Account
         //    }
         //}
 
-        //private bool SendEmail(string email, string subject, string body)
-        //{
-        //    try
-        //    {
-        //        MailMessage mail = new MailMessage();
-        //        SmtpClient smtpClient = new SmtpClient(_smtpSettings.Server, _smtpSettings.Port);
-        //        smtpClient.UseDefaultCredentials = false;
-        //        smtpClient.Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password);
-        //        smtpClient.EnableSsl = true;
+        private bool SendEmail(string email, string subject, string body)
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient smtpClient = new SmtpClient(_smtpSettings.Server, _smtpSettings.Port);
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password);
+                smtpClient.EnableSsl = true;
 
-        //        mail.From = new MailAddress("Jerry@TheBoss.com");
-        //        mail.To.Add(email);
-        //        mail.Subject = subject;
-        //        mail.Body = body;
+                mail.From = new MailAddress("Jerry@TheBoss.com");
+                mail.To.Add(email);
+                mail.Subject = subject;
+                mail.Body = body;
 
-        //        smtpClient.Send(mail);
+                smtpClient.Send(mail);
 
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle the exception (log, notify, etc.)
-        //        return false;
-        //    }
-        //}
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception (log, notify, etc.)
+                return false;
+            }
+        }
 
     }
 }
